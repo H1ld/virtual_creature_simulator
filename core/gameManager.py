@@ -112,6 +112,7 @@ class Game:
                     actionSuccess = self.creature.heal(20)
                 case "5" | "quitter":
                     eaten = self._quit()
+                    break
                 case _:
                     actionSuccess = False
                     print("Action non reconnue.")
