@@ -36,15 +36,20 @@ class Game:
     def _createCreature(self, firstPlayThrough):
         """Prompts the user for a name and type, creating a Creature from inputs."""
         name = input("Bienvenue dans le simulateur de creatures! Choisissez lui un nom.\n\n> ") if firstPlayThrough else input("Nommez votre prochain jouet.\n\n>")
-        type_creature = input("Choisissez un type. (dragon/chaton)\n\n> ").lower()
+        type_creature = input("Choisissez un type.\n1. Chat\n2. Dragon\n3. Lapin\n4. Tortue\n\n> ").strip().lower()
 
-        if type_creature == "dragon":
-            self.creature = Dragon(name)
-        elif type_creature == "chaton":
-            self.creature = Cat(name)
-        else:
-            print("Type inconnu, creation d'un chaton par defaut.")
-            self.creature = Cat(name)
+        match(type_creature):
+            case "1" | "chat":
+                self.creature = Cat(name)
+            case "2" | "dragon":
+                self.creature = Dragon(name)
+            case "3" | "lapin":
+                self.creature = Rabbit(name)
+            case "4" | "tortue":
+                self.creature = Turtle(name)
+            case _:
+                print("Type inconnu, creation d'un chat par defaut.")
+                self.creature = Cat(name)
 
     def _randomEvent(self):
         """Triggers a random event with a 1 in 6 chance."""

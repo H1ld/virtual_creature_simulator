@@ -17,7 +17,7 @@ class Creature:
     """Virtual creature with basic life attributes. Requires Bcolors class."""
     def __init__(self, name, type_creature, alive=True, sick=False, age=0, max_hunger=100, max_energy=100, max_happiness=100, max_health=100, hunger=None, energy=None, happiness=None, health=None):
         self.name = name
-        self.type = type_creature  # This will be saved but NOT passed in kwargs
+        self.type = type_creature
         self.alive = alive
         self.sick = sick
         self.age = age
@@ -267,7 +267,7 @@ class Creature:
     @classmethod
     def from_dict(cls, data):
         """Load creature from a dictionary."""
-        creature_classes = {"Dragon": Dragon, "Cat": Cat}
+        creature_classes = {"Dragon": Dragon, "Cat": Cat, "Rabbit": Rabbit, "Turtle": Turtle}
         creature_class = creature_classes.get(data["type"], cls)  # Default to Creature if type was modified manually
         
         del data["type"]
@@ -289,19 +289,38 @@ class Creature:
             print(f"{filename} non trouve.")
             return None
 
-
-class Dragon(Creature):
-    "Child class of Creature, possesses different max_stats and ages differently"
-    def __init__(self, name, **kwargs):
-        kwargs.setdefault("max_energy", 200)
-        kwargs.setdefault("max_health", 500)
-        kwargs.setdefault("max_hunger", 200)
-
-        super().__init__(name, "Dragon", **kwargs)
-        self.healthDecayValue = lambda: 5 + self.age // 10
-
 class Cat(Creature):
-    "Child class of Creature, possesses different max_stats and ages differently"
+    "Child class of Creature, possesses default max_stats and aging formula."
     def __init__(self, name, **kwargs):
         super().__init__(name, "Cat", **kwargs)
 
+class Dragon(Creature):
+    "Child class of Creature, possesses different max_stats and ages differently."
+    def __init__(self, name, **kwargs):
+        kwargs.setdefault("max_hunger", 200)
+        kwargs.setdefault("max_energy", 200)
+        kwargs.setdefault("max_health", 500)
+
+        super().__init__(name, "Dragon", **kwargs)
+        self.healthDecayValue = lambda: 5 + self.age // 10
+class Rabbit(Creature):
+    "Child class of Creature, possesses different max_stats and ages differently"
+    def __init__(self, name, **kwargs):
+        kwargs.setdefault("max_hunger", 80)
+        kwargs.setdefault("max_energy", 180)
+        kwargs.setdefault("max_happiness", 120)
+        kwargs.setdefault("max_health", 80)
+
+        super().__init__(name, "Rabbit", **kwargs)
+        self.healthDecayValue = lambda: 3 + self.age * 2
+
+class Turtle(Creature):
+    "Child class of Creature, possesses different max_stats and ages differently"
+    def __init__(self, name, **kwargs):
+        kwargs.setdefault("max_hunger", 50)
+        kwargs.setdefault("max_energy", 50)
+        kwargs.setdefault("max_happiness", 80)
+        kwargs.setdefault("max_health", 200)
+
+        super().__init__(name, "Turtle", **kwargs)
+        self.healthDecayValue = lambda: 5 + self.age // 5
