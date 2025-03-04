@@ -24,7 +24,7 @@ Libraries [pygame](https://pypi.org/project/pygame/), [pillow](https://pypi.org/
 pip install pygame pillow pygetwindow
 ```
 This project uses colors, therefore, ANSI support must be enabled.
-You can enable it in windows 10+ with
+You can enable it in windows 10+ running this command in windows powershell as admin:
 ```
 reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
 ```
