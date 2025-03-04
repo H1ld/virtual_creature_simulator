@@ -72,8 +72,26 @@ class Game:
                 case "o" | "oui" | "y" | "yes":
                     self.creature.save()
                 case "n" | "no" | "non":
-                    self.creature.kill()
+                    return self.creature.kill()
                 
+    def _eatingEnding(self):
+        """5th quitting ending interaction."""
+        timesAvoided = 0
+        while (True):
+            if (timesAvoided > 5):
+                temp = list(self.creature.name)
+                random.shuffle(temp)
+                self.creature.name = ''.join(temp)
+
+            action = input(f"{bcolors.red}\n\nQue voulez-vous faire de {self.creature.name}?\n1. manger\n2. ...\n3. ...\n4. ...\n5. ...\n\n> {bcolors.reset}").strip().lower()
+            if action in {"1","manger"}:
+                print(f"Vous ne mangez qu'un petit bout {f"du peu que vous reconnaissez " if timesAvoided>5 else ""}de {self.creature.name}")
+                print(f"{bcolors.lightgreen}+5 nourriture{bcolors.reset}")
+                break
+            else:
+                print(f"{bcolors.red}Vous contemplez le cadavre de {self.creature.name}, esperant repousser l'inevitable.{bcolors.reset}")
+                timesAvoided+=1
+
 
     def play(self):
         """Main game loop. Initializes random seed, creates/import creature, allows the player to play."""
@@ -93,13 +111,14 @@ class Game:
                 case "4" | "soigner":
                     actionSuccess = self.creature.heal(20)
                 case "5" | "quitter":
-                    self._quit()
-                    break
+                    eaten = self._quit()
                 case _:
                     actionSuccess = False
                     print("Action non reconnue.")
             
-            if actionSuccess:
+            if actionSuccess and self.creature.alive:
                 self._endOfTurnManager()
                 sleep(1)
         
+        if eaten:
+            self._eatingEnding()

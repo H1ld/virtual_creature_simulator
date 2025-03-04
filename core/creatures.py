@@ -238,12 +238,14 @@ class Creature:
             f"Vous decidez de faire de {self.name} votre repas,"
         ]
         sentenceEnding = "mettant ainsi fin a votre relation."
-        print(f"{bcolors.red}{lines[randomLine]} {sentenceEnding}{bcolors.reset}")
+        print(f"{bcolors.lightred}{lines[randomLine]} {sentenceEnding}{bcolors.reset}")
         self.alive = False
 
         saveFile = f"{self.name}.json"
         if os.path.exists(saveFile):
             os.remove(saveFile)
+        
+        return True if randomLine == 4 else False
 
 
     ################################################################
